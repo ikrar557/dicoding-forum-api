@@ -118,7 +118,6 @@ dist
 .pnp.*
 
 package-lock.json
-config
 .idea
 
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
