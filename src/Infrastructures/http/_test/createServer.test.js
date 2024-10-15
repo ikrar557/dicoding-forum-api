@@ -1,7 +1,6 @@
 const createServer = require('../createServer');
 
 describe('HTTP server', () => {
-
   describe('when GET /', () => {
     it('should return 200 and welcome message', async () => {
       // Arrange
