@@ -1,5 +1,6 @@
 const DomainErrorTranslator = require('../DomainErrorTranslator');
 const InvariantError = require('../InvariantError');
+const NotFoundError = require("../NotFoundError");
 
 describe('DomainErrorTranslator', () => {
   it('should translate error correctly', () => {
@@ -31,6 +32,9 @@ describe('DomainErrorTranslator', () => {
         .toStrictEqual(new InvariantError('tidak dapat membuat comment baru karena properti yang dibutuhkan tidak ada'));
     expect(DomainErrorTranslator.translate(new Error('ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION')))
         .toStrictEqual(new InvariantError('tidak dapat membuat comment baru karena tipe data tidak sesuai'));
+
+    expect(DomainErrorTranslator.translate(new Error('THREAD_REPOSITORY_POSTGRES.THREAD_NOT_FOUND')))
+        .toStrictEqual(new NotFoundError('tidak dapat menemukan thread yang dicari'));
   });
 
       it('should return original error when error message is not needed to translate', () => {

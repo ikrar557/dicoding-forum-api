@@ -34,6 +34,7 @@ const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
 
 const AddThreadUseCase = require('../Applications/use_case/AddThreadUseCase');
+const DetailThreadUseCase = require('../Applications/use_case/DetailThreadUseCase');
 
 const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
 
@@ -220,19 +221,23 @@ container.register([
       ],
     },
   },
-  // {
-  //   key: DetailThreadUseCase.name,
-  //   Class: DetailThreadUseCase,
-  //   parameter: {
-  //     injectType: 'destructuring',
-  //     dependencies: [
-  //       {
-  //         name: 'threadRepository',
-  //         internal: ThreadRepository.name,
-  //       },
-  //     ],
-  //   },
-  // }
+  {
+    key: DetailThreadUseCase.name,
+    Class: DetailThreadUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
+      ],
+    },
+  }
 ]);
 
 module.exports = container;
