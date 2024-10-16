@@ -1,7 +1,7 @@
 const DetailComment = require('../DetailComment');
 
 describe('detail comment domain entity', () => {
-    it('should throw error when payload not contain needed property', () => {
+    it('throw error when payload not contain needed property', () => {
         const payload = {
             id: 'comment-test2024',
             username: 'ikrar',
@@ -10,7 +10,7 @@ describe('detail comment domain entity', () => {
         expect(() => new DetailComment(payload)).toThrowError('DETAIL_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY');
     })
 
-    it('should throw error when payload not meet data type specification', () => {
+    it('throw error when payload not meet data type specification', () => {
         const payload = {
             id: 'comment-test2024',
             username: 1291239139,
@@ -22,7 +22,7 @@ describe('detail comment domain entity', () => {
         expect(() => new DetailComment(payload)).toThrowError('DETAIL_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION');
     })
 
-    it('should create DetailComment object correctly', () => {
+    it('create DetailComment object correctly', () => {
         const payload = {
             id: 'comment-test2024',
             username: 'ikrar',
@@ -39,7 +39,7 @@ describe('detail comment domain entity', () => {
         expect(detailComment.date).toEqual(payload.date);
     })
 
-    it('should create DetailComment object correctly and not show content already deleted', () => {
+    it('create DetailComment object and not show content already deleted', () => {
         const payload = {
             id: 'comment-test2024',
             username: 'ikrar',
@@ -51,7 +51,7 @@ describe('detail comment domain entity', () => {
         const detailComment = new DetailComment(payload);
 
         expect(detailComment.id).toEqual(payload.id)
-        expect(detailComment.content).toEqual(payload.content);
+        expect(detailComment.content).toEqual('**komentar telah dihapus**');
         expect(detailComment.username).toEqual(payload.username);
         expect(detailComment.date).toEqual(payload.date);
     })
