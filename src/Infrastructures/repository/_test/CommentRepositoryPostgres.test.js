@@ -44,14 +44,14 @@ describe('CommentRepositoryPostgres', () => {
 
             await CommentsTableTestHelper.NewComment({
                 id: 'comment-test2024',
-                date: '2024-10-15T07:11:22.125Z',
+                date: '2024-10-15T07:11:20.125Z',
                 content: 'first comment',
                 is_deleted: false,
             });
 
             await CommentsTableTestHelper.NewComment({
                 id: 'comment-test2025',
-                date: '2024-10-15T07:11:22.125Z',
+                date: '2024-10-15T07:11:21.125Z',
                 content: 'another comment',
                 is_deleted: false,
             });
@@ -69,14 +69,14 @@ describe('CommentRepositoryPostgres', () => {
             expect(result).toStrictEqual([
                 {
                     id: 'comment-test2024',
-                    date: '2024-10-15T07:11:22.125Z',
+                    date: '2024-10-15T07:11:20.125Z',
                     content: 'first comment',
                     username: 'dicoding',
                     is_deleted: false,
                 },
                 {
                     id: 'comment-test2025',
-                    date: '2024-10-15T07:11:22.125Z',
+                    date: '2024-10-15T07:11:21.125Z',
                     content: 'another comment',
                     username: 'dicoding',
                     is_deleted: false,

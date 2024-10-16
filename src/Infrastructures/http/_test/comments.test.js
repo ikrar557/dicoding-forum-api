@@ -90,28 +90,37 @@ describe('/threads/{threadId/comments endpoint', () => {
             expect(response.statusCode).toEqual(401);
             expect(responseJson.error).toEqual('Unauthorized');
         });
-        it('should response 201 and added comment', async () => {
+        it('should response 201 and persisted comment', async () => {
+            const requestPayload = {
+                content: 'random comment',
+            };
+
             const server = await createServer(container);
 
             const accessToken = await ServerTestHelper.getAccessToken();
 
-            const result = await pool.query('SELECT * FROM users WHERE username = $1', ['test']);
+            const result = await pool.query('SELECT * FROM users WHERE username = $1', ['ikrar']);
+
             const {id: owner} = result.rows[0];
 
             await ThreadsTableTestHelper.addThread({owner});
-            await CommentsTableTestHelper.NewComment({userId: owner});
 
             const response = await server.inject({
-                method: 'DELETE',
-                url: '/threads/thread-558/comments/comment-test2024',
+                method: 'POST',
+                url: '/threads/thread-557/comments',
+                payload: requestPayload,
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
-                },
+                }
             });
 
             const responseJson = JSON.parse(response.payload);
-            expect(response.statusCode).toEqual(200);
+            expect(response.statusCode).toEqual(201);
             expect(responseJson.status).toEqual('success');
-        })
+            expect(responseJson.data.addedComment).toBeDefined();
+            expect(responseJson.data.addedComment.id).toBeDefined();
+            expect(responseJson.data.addedComment.content).toEqual(requestPayload.content);
+            expect(responseJson.data.addedComment.owner).toBeDefined();
+        });
     })
 })

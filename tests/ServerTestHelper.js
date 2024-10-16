@@ -7,9 +7,9 @@ const ServerTestHelper = {
   async getAccessToken() {
     const server = await createServer(container);
     const requestPayload = {
-      username: 'test',
-      password: 'test',
-      fullname: 'Test Account',
+      username: 'ikrar',
+      password: 'rahasia',
+      fullname: 'ikrar dicoding',
     };
 
     await server.inject({

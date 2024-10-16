@@ -14,10 +14,10 @@ class CommentRepositoryPostgres extends CommentRepository {
     async getAllCommentsByThreadId(id) {
         const query = {
             text: `SELECT comments.id, users.username, comments.date, comments.content, comments.is_deleted
-          FROM comments
-          INNER JOIN users ON comments.user_id = users.id
-          WHERE comments.thread_id = $1
-          ORDER BY comments.date ASC`,
+      FROM comments
+      INNER JOIN users ON comments.user_id = users.id
+      WHERE comments.thread_id = $1
+      ORDER BY comments.date ASC`,
             values: [id],
         };
 
