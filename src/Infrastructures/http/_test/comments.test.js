@@ -123,4 +123,72 @@ describe('/threads/{threadId/comments endpoint', () => {
             expect(responseJson.data.addedComment.owner).toBeDefined();
         });
     })
+
+    describe('DELETE /thread{threadId}/comments/{commentId}', () => {
+        it('reponse 401 unauthorized when missing proper authentication', async () => {
+            await UsersTableTestHelper.addUser({});
+            await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.NewComment({});
+
+            const server = await createServer(container);
+
+            const response = await server.inject({
+                method: 'DELETE',
+                url: '/threads/thread-557/comments/comment-test2024',
+            })
+
+            const responseJSON = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(401);
+            expect(responseJSON.error).toEqual('Unauthorized')
+        })
+
+        it('response 403 when user isn\'t owner of the comment', async () => {
+            await UsersTableTestHelper.addUser({});
+            await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.NewComment({});
+
+            const server = await createServer(container);
+
+            const accessToken = await ServerTestHelper.getAccessToken();
+            const {id: owner} = await pool.query('SELECT * FROM users WHERE username = $1', ['test']);
+            await CommentsTableTestHelper.NewComment({id: 'test comments', userId: owner});
+
+            const response = await server.inject({
+                method: 'DELETE',
+                url: '/threads/thread-557/comments/comment-test2024',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                }
+            })
+
+            const responseJSON = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(403);
+            expect(responseJSON.status).toEqual('fail');
+            expect(responseJSON.message).toEqual('tidak dapat menghapus comment karena user bukan pemilik comment')
+        })
+
+        it('response 200 when delete comment valid', async () => {
+
+            const server = await createServer(container);
+
+            const accessToken = await ServerTestHelper.getAccessToken();
+            const result = await pool.query('SELECT * FROM users WHERE username = $1', ['ikrar']);
+            const {id: owner} = result.rows[0];
+
+            await ThreadsTableTestHelper.addThread({owner});
+            await CommentsTableTestHelper.NewComment({userId: owner});
+
+            const response = await server.inject({
+                method: 'DELETE',
+                url: '/threads/thread-557/comments/comment-test2024',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(200);
+            expect(responseJson.status).toEqual('success');
+        });
+    })
 })
