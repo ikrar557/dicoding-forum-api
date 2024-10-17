@@ -116,43 +116,43 @@ describe('test /threads endpoint', () => {
   });
 
   describe('when GET /threads/{threadId}', () => {
-      it('should response 404 when thread is not found', async () => {
-          await UsersTableTestHelper.addUser({});
-          await ThreadsTableTestHelper.addThread({});
+    it('should response 404 when thread is not found', async () => {
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
 
-          const server = await createServer(container);
+      const server = await createServer(container);
 
-          const response = await server.inject({
-              method: 'GET',
-              url: '/threads/thread-123',
-          });
-
-          const responseJson = JSON.parse(response.payload);
-          expect(response.statusCode).toEqual(404);
-          expect(responseJson.status).toEqual('fail');
-          expect(responseJson.message).toEqual('tidak dapat menemukan thread yang dicari');
+      const response = await server.inject({
+        method: 'GET',
+        url: '/threads/thread-123',
       });
 
-      it('should response 200 along with the detail thread when thread is found', async () => {
-          await UsersTableTestHelper.addUser({});
-          await ThreadsTableTestHelper.addThread({});
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('tidak dapat menemukan thread yang dicari');
+    });
 
-          const server = await createServer(container);
+    it('should response 200 along with the detail thread when thread is found', async () => {
+      await UsersTableTestHelper.addUser({});
+      await ThreadsTableTestHelper.addThread({});
 
-          const response = await server.inject({
-              method: 'GET',
-              url: '/threads/thread-557',
-          });
+      const server = await createServer(container);
 
-          const responseJson = JSON.parse(response.payload);
-          expect(response.statusCode).toEqual(200);
-          expect(responseJson.status).toEqual('success');
-          expect(responseJson.data.thread).toBeDefined();
-          expect(responseJson.data.thread.id).toEqual('thread-557');
-          expect(responseJson.data.thread.title).toBeDefined();
-          expect(responseJson.data.thread.body).toBeDefined();
-          expect(responseJson.data.thread.date).toBeDefined();
-          expect(responseJson.data.thread.username).toBeDefined();
+      const response = await server.inject({
+        method: 'GET',
+        url: '/threads/thread-557',
       });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.id).toEqual('thread-557');
+      expect(responseJson.data.thread.title).toBeDefined();
+      expect(responseJson.data.thread.body).toBeDefined();
+      expect(responseJson.data.thread.date).toBeDefined();
+      expect(responseJson.data.thread.username).toBeDefined();
+    });
   });
 });
