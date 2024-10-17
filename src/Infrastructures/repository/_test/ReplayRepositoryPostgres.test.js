@@ -86,14 +86,14 @@ describe('ReplyRepositoryPostgres', () => {
             await ReplaysTableTestHelper.addReplay({
                 id: 'reply-test1',
                 content: 'random first replay',
-                date: '2024-10-17T19:32:43.000Z',
+                date: '2024-10-17T19:12:43.000Z',
                 is_deleted: false,
             });
 
             await ReplaysTableTestHelper.addReplay({
                 id: 'reply-test2',
                 content: 'random second replay',
-                date: '2024-10-17T19:32:43.000Z',
+                date: '2024-10-17T19:22:43.000Z',
                 is_deleted: false,
             });
 
@@ -109,6 +109,23 @@ describe('ReplyRepositoryPostgres', () => {
 
             expect(result).toStrictEqual([
                 {
+                    id: 'reply-test1',
+                    content: 'random first replay',
+                    date: '2024-10-17T19:12:43.000Z',
+                    username: 'dicoding',
+                    is_deleted: false,
+                    comment_id: 'comment-test2024',
+                },
+
+                {
+                    id: 'reply-test2',
+                    content: 'random second replay',
+                    date: '2024-10-17T19:22:43.000Z',
+                    username: 'dicoding',
+                    is_deleted: false,
+                    comment_id: 'comment-test2024',
+                },
+                {
                     id: 'reply-test3',
                     content: 'random third replay',
                     date: '2024-10-17T19:32:43.000Z',
@@ -116,22 +133,7 @@ describe('ReplyRepositoryPostgres', () => {
                     is_deleted: false,
                     comment_id: 'comment-test2024',
                 },
-                {
-                    id: 'reply-test2',
-                    content: 'random second replay',
-                    date: '2024-10-17T19:32:43.000Z',
-                    username: 'dicoding',
-                    is_deleted: false,
-                    comment_id: 'comment-test2024',
-                },
-                {
-                    id: 'reply-test1',
-                    content: 'random first replay',
-                    date: '2024-10-17T19:32:43.000Z',
-                    username: 'dicoding',
-                    is_deleted: false,
-                    comment_id: 'comment-test2024',
-                },
+
             ]);
         });
     });
