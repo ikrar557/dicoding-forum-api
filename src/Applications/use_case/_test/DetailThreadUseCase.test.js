@@ -6,8 +6,6 @@ const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const CommentRepository = require('../../../Domains/comments/CommentsRepository');
 const ReplayRepository = require('../../../Domains/replays/ReplayRepository');
 
-
-
 describe('DetailThreadUseCase', () => {
   it('orchestrating detail thread action correctly', async () => {
     const id = 'thread-557';
@@ -30,7 +28,7 @@ describe('DetailThreadUseCase', () => {
               content: 'random replay',
               date: '2024-10-17T19:14:30.555Z',
               username: 'dicoding',
-            }
+            },
           ],
         },
       ],
@@ -74,7 +72,7 @@ describe('DetailThreadUseCase', () => {
     mockCommentRepository.getAllCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockDetailComment));
     mockReplayRepository.fetchAllReplaysByThreadId = jest.fn()
-        .mockImplementation(() => Promise.resolve(mockDetailReplay));
+      .mockImplementation(() => Promise.resolve(mockDetailReplay));
 
     const getThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,
@@ -90,7 +88,7 @@ describe('DetailThreadUseCase', () => {
     expect(mockCommentRepository.getAllCommentsByThreadId)
       .toBeCalledWith(id);
     expect(mockReplayRepository.fetchAllReplaysByThreadId)
-        .toBeCalledWith(id);
+      .toBeCalledWith(id);
   });
 
   it('not showing comment or replay if deleted and orchestrating detail thread correctly', async () => {
@@ -114,7 +112,7 @@ describe('DetailThreadUseCase', () => {
               content: '**balasan telah dihapus**',
               date: '2024-10-17T19:14:30.555Z',
               username: 'dicoding',
-            }
+            },
           ],
         },
       ],
@@ -158,7 +156,7 @@ describe('DetailThreadUseCase', () => {
     mockCommentRepository.getAllCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockDetailComment));
     mockReplayRepository.fetchAllReplaysByThreadId = jest.fn()
-        .mockImplementation(() => Promise.resolve(mockDetailReplay))
+      .mockImplementation(() => Promise.resolve(mockDetailReplay));
 
     const getThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,
@@ -174,6 +172,6 @@ describe('DetailThreadUseCase', () => {
     expect(mockCommentRepository.getAllCommentsByThreadId)
       .toBeCalledWith(id);
     expect(mockReplayRepository.fetchAllReplaysByThreadId)
-        .toBeCalledWith(id)
+      .toBeCalledWith(id);
   });
 });

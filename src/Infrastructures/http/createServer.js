@@ -10,7 +10,6 @@ const threads = require('../../Interfaces/http/api/threads');
 const comments = require('../../Interfaces/http/api/comments');
 const replays = require('../../Interfaces/http/api/replays');
 
-
 const createServer = async (container) => {
   const server = Hapi.server({
     host: process.env.HOST,
@@ -58,8 +57,8 @@ const createServer = async (container) => {
     },
     {
       plugin: replays,
-      options: { container }
-    }
+      options: { container },
+    },
   ]);
 
   server.route({

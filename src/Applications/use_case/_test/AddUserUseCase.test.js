@@ -9,7 +9,6 @@ describe('AddUserUseCase', () => {
    * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
    */
   it('should orchestrating the add user action correctly', async () => {
-    // Arrange
     const useCasePayload = {
       username: 'dicoding',
       password: 'secret',
@@ -40,10 +39,8 @@ describe('AddUserUseCase', () => {
       passwordHash: mockPasswordHash,
     });
 
-    // Action
     const registeredUser = await getUserUseCase.execute(useCasePayload);
 
-    // Assert
     expect(registeredUser).toStrictEqual(new RegisteredUser({
       id: 'user-123',
       username: useCasePayload.username,

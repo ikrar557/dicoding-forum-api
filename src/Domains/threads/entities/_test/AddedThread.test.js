@@ -7,7 +7,6 @@ describe('AddedThread entities', () => {
       title: 'random thread title',
     };
 
-    // Action & Assert
     expect(() => new AddedThread(payload)).toThrowError('ADDED_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
   });
 

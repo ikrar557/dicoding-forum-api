@@ -29,7 +29,6 @@ describe('AddComment domain entity', () => {
 
     const { content, threadId, userId } = new AddComment(payload);
 
-    // Assert
     expect(content).toEqual(payload.content);
     expect(threadId).toEqual(payload.threadId);
     expect(userId).toEqual(payload.userId);

@@ -39,21 +39,21 @@ const ReplaysTestTableHelper = {
     isDeleted = false,
   }) {
     const query = {
-        text: 'INSERT INTO replays VALUES($1, $2, $3, $4, $5, $6)',
-        values: [id, content, date, commentId, userId, isDeleted],
+      text: 'INSERT INTO replays VALUES($1, $2, $3, $4, $5, $6)',
+      values: [id, content, date, commentId, userId, isDeleted],
     };
 
-      await pool.query(query);
+    await pool.query(query);
   },
 
-    async deleteReplayById(id) {
-        const query = {
-            text: 'UPDATE replays SET is_deleted = TRUE WHERE id = $1',
-            values: [id],
-        };
+  async deleteReplayById(id) {
+    const query = {
+      text: 'UPDATE replays SET is_deleted = TRUE WHERE id = $1',
+      values: [id],
+    };
 
-        await pool.query(query);
-    },
+    await pool.query(query);
+  },
 };
 
 module.exports = ReplaysTestTableHelper;

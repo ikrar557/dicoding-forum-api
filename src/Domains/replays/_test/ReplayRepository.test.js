@@ -13,6 +13,5 @@ describe('ReplayRepository interface', () => {
     await expect(replayRepository.deleteReplayById('')).rejects.toThrowError('REPLAY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     await expect(replayRepository.checkReplayIsExistInComment('', '', '')).rejects.toThrowError('REPLAY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     await expect(replayRepository.checkReplayOwner('', '')).rejects.toThrowError('REPLAY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
-
   });
 });
