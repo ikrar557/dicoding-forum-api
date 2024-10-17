@@ -23,7 +23,10 @@ const ThreadRepository = require('../Domains/threads/ThreadRepository');
 const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
 
 const CommentRepository = require('../Domains/comments/CommentsRepository');
-const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres')
+const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
+
+const ReplayRepository = require('../Domains/replays/ReplayRepository')
+const ReplayRepositoryPostgres = require('./repository/ReplayRepositoryPostgres')
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -37,8 +40,9 @@ const AddThreadUseCase = require('../Applications/use_case/AddThreadUseCase');
 const DetailThreadUseCase = require('../Applications/use_case/DetailThreadUseCase');
 
 const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
-const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase')
+const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
 
+const AddReplayUseCase = require('../Applications/use_case/AddReplayUseCase')
 
 // creating container
 const container = createContainer();
@@ -118,7 +122,21 @@ container.register([
           concrete: nanoid,
         },
       ],
-    }
+    },
+  },
+  {
+    key: ReplayRepository.name,
+    Class: ReplayRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
   },
 ]);
 
@@ -248,10 +266,23 @@ container.register([
         {
           name: 'commentRepository',
           internal: CommentRepository.name,
-        }
+        },
       ],
     },
   },
+  {
+    key: AddReplayUseCase.name,
+    Class: AddReplayUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'replayRepository',
+          internal: ReplayRepository.name,
+        },
+      ],
+    },
+  }
 ]);
 
 module.exports = container;

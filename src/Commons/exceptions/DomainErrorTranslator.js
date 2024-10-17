@@ -1,6 +1,6 @@
 const InvariantError = require('./InvariantError');
-const NotFoundError = require("./NotFoundError");
-const AuthorizationError = require("./AuthorizationError");
+const NotFoundError = require('./NotFoundError');
+const AuthorizationError = require('./AuthorizationError');
 
 const DomainErrorTranslator = {
   translate(error) {
@@ -25,12 +25,14 @@ DomainErrorTranslator._directories = {
   'ADD_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat comment baru karena tipe data tidak sesuai'),
   'DELETE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat menghapus comment karena properti yang dibutuhkan tidak ada'),
   'DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat menghapus comment karena tipe data tidak sesuai'),
+  'ADD_REPLAY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat replay baru karena properti yang dibutuhkan tidak ada'),
+  'ADD_REPLAY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat replay baru karena tipe data tidak sesuai'),
 
   'THREAD_REPOSITORY_POSTGRES.THREAD_NOT_FOUND': new NotFoundError('tidak dapat menemukan thread yang dicari'),
   'COMMENT_REPOSITORY_POSTGRES.COMMENT_NOT_FOUND': new NotFoundError('tidak dapat menemukan comment yang dicari'),
 
   'COMMENT_REPOSITORY_POSTGRES.NOT_THE_COMMENT_OWNER': new AuthorizationError('tidak dapat menghapus comment karena user bukan pemilik comment'),
-
+  'REPLY_REPOSITORY_POSTGRES.NOT_THE_REPLY_OWNER': new AuthorizationError('tidak dapat menghapus replay karena user bukan pemilik replay'),
 };
 
 module.exports = DomainErrorTranslator;
