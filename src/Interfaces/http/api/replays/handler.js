@@ -1,5 +1,7 @@
 const autoBind = require('auto-bind');
+
 const AddReplayUseCase = require('../../../../Applications/use_case/AddReplayUseCase');
+const DeleteReplayUseCase = require('../../../../Applications/use_case/DeleteReplayUseCase')
 
 class ReplaysHandler {
     constructor(container) {
@@ -27,6 +29,26 @@ class ReplaysHandler {
         });
 
         response.code(201);
+        return response;
+    }
+
+    async deleteReplayHandler(request, h) {
+        const { replyId: id, commentId, threadId } = request.params;
+        const userId = request.auth.credentials.id;
+        const payload = {
+            id,
+            commentId,
+            threadId,
+            userId,
+        };
+
+        const deleteReplayUseCase = this._container.getInstance(DeleteReplayUseCase.name);
+        await deleteReplayUseCase.execute(payload);
+
+        const response = h.response({
+            status: 'success',
+        });
+
         return response;
     }
 }

@@ -38,19 +38,25 @@ describe('DomainErrorTranslator', () => {
     expect(DomainErrorTranslator.translate(new Error('DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION')))
       .toStrictEqual(new InvariantError('tidak dapat menghapus comment karena tipe data tidak sesuai'));
     expect(DomainErrorTranslator.translate(new Error('ADD_REPLAY.NOT_CONTAIN_NEEDED_PROPERTY')))
-        .toStrictEqual(new InvariantError('tidak dapat membuat replay baru karena properti yang dibutuhkan tidak ada'));
+      .toStrictEqual(new InvariantError('tidak dapat membuat replay baru karena properti yang dibutuhkan tidak ada'));
     expect(DomainErrorTranslator.translate(new Error('ADD_REPLAY.NOT_MEET_DATA_TYPE_SPECIFICATION')))
-        .toStrictEqual(new InvariantError('tidak dapat membuat replay baru karena tipe data tidak sesuai'));
+      .toStrictEqual(new InvariantError('tidak dapat membuat replay baru karena tipe data tidak sesuai'));
+    expect(DomainErrorTranslator.translate(new Error('DELETE_REPLAY.NOT_CONTAIN_NEEDED_PROPERTY')))
+        .toStrictEqual(new InvariantError('tidak dapat menghapus replay karena properti yang dibutuhkan tidak ada'));
+    expect(DomainErrorTranslator.translate(new Error('DELETE_REPLAY.NOT_MEET_DATA_TYPE_SPECIFICATION')))
+        .toStrictEqual(new InvariantError('tidak dapat menghapus replay karena tipe data tidak sesuai'));
 
     expect(DomainErrorTranslator.translate(new Error('THREAD_REPOSITORY_POSTGRES.THREAD_NOT_FOUND')))
       .toStrictEqual(new NotFoundError('tidak dapat menemukan thread yang dicari'));
     expect(DomainErrorTranslator.translate(new Error('COMMENT_REPOSITORY_POSTGRES.COMMENT_NOT_FOUND')))
       .toStrictEqual(new NotFoundError('tidak dapat menemukan comment yang dicari'));
+    expect(DomainErrorTranslator.translate(new Error('REPLAY_REPOSITORY_POSTGRES.REPLAY_NOT_FOUND')))
+      .toStrictEqual(new NotFoundError('tidak dapat menemukan replay yang dicari'))
 
     expect(DomainErrorTranslator.translate(new Error('COMMENT_REPOSITORY_POSTGRES.NOT_THE_COMMENT_OWNER')))
       .toStrictEqual(new AuthorizationError('tidak dapat menghapus comment karena user bukan pemilik comment'));
-    expect(DomainErrorTranslator.translate(new Error('REPLY_REPOSITORY_POSTGRES.NOT_THE_REPLY_OWNER')))
-        .toStrictEqual(new AuthorizationError('tidak dapat menghapus replay karena user bukan pemilik replay'));
+    expect(DomainErrorTranslator.translate(new Error('REPLAY_REPOSITORY_POSTGRES.NOT_THE_REPLAY_OWNER')))
+      .toStrictEqual(new AuthorizationError('tidak dapat menghapus replay karena user bukan pemilik replay'));
   });
 
   it('should return original error when error message is not needed to translate', () => {

@@ -127,4 +127,72 @@ describe('/threads/{threadId}/comments/{commentId}/replies', () => {
             expect(responseJson.data.addedReply.owner).toBeDefined();
         });
     });
+
+    describe('DELETE /threads/{threadId}/comments/{commentId}/replies/{replyId}', () => {
+        it('response 401 when missing proper authentication', async () => {
+            await UsersTableTestHelper.addUser({});
+            await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.NewComment({});
+            await ReplaysTableTestHelper.addReplay({});
+
+            const server = await createServer(container);
+
+            const response = await server.inject({
+                method: 'DELETE',
+                url: '/threads/thread-557/comments/comment-test2024/replies/replay-data999',
+            });
+
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(401);
+            expect(responseJson.error).toEqual('Unauthorized');
+        });
+
+        it('response 403 when user is not the owner of reply', async () => {
+            await UsersTableTestHelper.addUser({});
+            await ThreadsTableTestHelper.addThread({});
+            await CommentsTableTestHelper.NewComment({});
+            await ReplaysTableTestHelper.addReplay({});
+
+            const server = await createServer(container);
+
+            const accessToken = await ServerTestHelper.getAccessToken();
+            const {id: owner} = await pool.query('SELECT * FROM users WHERE username = $1', ['ikrar']);
+            await ReplaysTableTestHelper.addReplay({id: 'reply-345', userId: owner});
+
+            const response = await server.inject({
+                method: 'DELETE',
+                url: '/threads/thread-557/comments/comment-test2024/replies/replay-data999',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(403);
+            expect(responseJson.message).toEqual('tidak dapat menghapus replay karena user bukan pemilik replay');
+        });
+
+        it('response 200 when delete comment success', async () => {
+            const server = await createServer(container);
+
+            const accessToken = await ServerTestHelper.getAccessToken();
+            const result = await pool.query('SELECT * FROM users WHERE username = $1', ['ikrar']);
+            const { id: owner } = result.rows[0];
+            await ThreadsTableTestHelper.addThread({ owner });
+            await CommentsTableTestHelper.NewComment({ userId: owner });
+            await ReplaysTableTestHelper.addReplay({ userId: owner });
+
+            const response = await server.inject({
+                method: 'DELETE',
+                url: '/threads/thread-557/comments/comment-test2024/replies/replay-data999',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
+
+            const responseJson = JSON.parse(response.payload);
+            expect(response.statusCode).toEqual(200);
+            expect(responseJson.status).toEqual('success');
+        });
+    })
 })
