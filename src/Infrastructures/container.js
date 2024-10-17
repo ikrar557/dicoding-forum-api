@@ -25,8 +25,8 @@ const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres'
 const CommentRepository = require('../Domains/comments/CommentsRepository');
 const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
 
-const ReplayRepository = require('../Domains/replays/ReplayRepository')
-const ReplayRepositoryPostgres = require('./repository/ReplayRepositoryPostgres')
+const ReplayRepository = require('../Domains/replays/ReplayRepository');
+const ReplayRepositoryPostgres = require('./repository/ReplayRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -42,8 +42,8 @@ const DetailThreadUseCase = require('../Applications/use_case/DetailThreadUseCas
 const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
 
-const AddReplayUseCase = require('../Applications/use_case/AddReplayUseCase')
-const DeleteReplayUseCase = require('../Applications/use_case/DeleteReplayUseCase')
+const AddReplayUseCase = require('../Applications/use_case/AddReplayUseCase');
+const DeleteReplayUseCase = require('../Applications/use_case/DeleteReplayUseCase');
 
 // creating container
 const container = createContainer();
@@ -299,7 +299,7 @@ container.register([
           internal: ReplayRepository.name,
         },
       ],
-    }
+    },
   },
 ]);
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 class ReplayRepository {
   async addReplay(newReplay) {
     throw new Error('REPLAY_REPOSITORY.METHOD_NOT_IMPLEMENTED');
