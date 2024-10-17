@@ -254,6 +254,10 @@ container.register([
           name: 'commentRepository',
           internal: CommentRepository.name,
         },
+        {
+          name: 'replayRepository',
+          internal: ReplayRepository.name,
+        },
       ],
     },
   },
