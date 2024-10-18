@@ -1,9 +1,6 @@
 const AddedReplay = require('../../Domains/replays/entities/AddedReplay');
 const ReplyRepository = require('../../Domains/replays/ReplayRepository');
 
-const ThreadRepositoryPostgres = require('./ThreadRepositoryPostgres');
-const CommentRepositoryPostgres = require('./CommentRepositoryPostgres');
-
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 
@@ -15,18 +12,10 @@ class ReplayRepositoryPostgres extends ReplyRepository {
   }
 
   async addReplay(newReplay) {
-    const { content, commentId: comment_id, userId: user_id, threadId: thread_id } = newReplay;
+    const { content, commentId: comment_id, userId: user_id } = newReplay;
 
     const id = `replay-${this._idGenerator()}`;
     const date = new Date().toISOString();
-
-    // TODO: Move logic validation to use case instead
-    const threadRepositoryPostgres = new ThreadRepositoryPostgres(this._pool, this._idGenerator);
-    await threadRepositoryPostgres.checkThreadAvailability(thread_id);
-
-    // TODO: Move logic validation to use case instead
-    const commentRepositoryPostgres = new CommentRepositoryPostgres(this._pool, this._idGenerator);
-    await commentRepositoryPostgres.checkCommentIsAvailableInThread(comment_id, thread_id);
 
     const query = {
       text: 'INSERT INTO replays VALUES($1, $2, $3, $4, $5) RETURNING id, content, user_id',

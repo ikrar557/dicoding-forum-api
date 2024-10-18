@@ -36,6 +36,6 @@ describe('DeleteReplay entity', () => {
     expect(deleteReplay.id).toEqual(payload.id);
     expect(deleteReplay.threadId).toEqual(payload.threadId);
     expect(deleteReplay.commentId).toEqual(payload.commentId);
-    expect(deleteReplay.userId).toEqual(payload.userId)
+    expect(deleteReplay.userId).toEqual(payload.userId);
   });
 });
