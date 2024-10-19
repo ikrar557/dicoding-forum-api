@@ -26,10 +26,11 @@ describe('AddedComment domain entity', () => {
       owner: 'user-123',
     };
 
-    const { id, content, userId } = new AddedComment(payload);
+    const { id, content, userId, owner } = new AddedComment(payload);
 
     expect(id).toEqual(payload.id);
     expect(content).toEqual(payload.content);
     expect(userId).toEqual(payload.userId);
+    expect(owner).toEqual(payload.owner)
   });
 });
