@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 class LikesRepository {
   async addLikeComment(payload) {
     throw new Error('LIKES_REPOSITORY.METHOD_NOT_IMPLEMENTED');

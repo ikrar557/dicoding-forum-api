@@ -1,11 +1,18 @@
 const AddLike = require('../../Domains/likes/entity/AddLike');
 
 class LikeOrUnlikeCommentUseCase {
-  constructor({ likesRepository }) {
+  constructor({ likesRepository, threadRepository, commentRepository }) {
     this._likesRepository = likesRepository;
+    this._threadRepository = threadRepository;
+    this._commentRepository = commentRepository;
   }
 
   async execute(payload) {
+    const { threadId, commentId } = payload;
+
+    await this._threadRepository.checkThreadAvailability(threadId);
+    await this._commentRepository.checkCommentIsAvailableInThread(commentId, threadId);
+
     const addCommentLike = new AddLike(payload);
 
     const isLiked = await this._likesRepository.verifyCommentIsLiked(
@@ -14,10 +21,10 @@ class LikeOrUnlikeCommentUseCase {
     );
 
     if (isLiked) {
-      return await this._likesRepository.unlikeComment(addCommentLike.userId, addCommentLike.commentId);
+      return this._likesRepository.unlikeComment(addCommentLike.userId, addCommentLike.commentId);
     }
 
-    return await this._likesRepository.addLikeComment(addCommentLike);
+    return this._likesRepository.addLikeComment(addCommentLike);
   }
 }
 

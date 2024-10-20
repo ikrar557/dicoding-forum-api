@@ -1,6 +1,3 @@
-const ThreadRepositoryPostgres = require('./ThreadRepositoryPostgres');
-const CommentRepositoryPostgres = require('./CommentRepositoryPostgres');
-
 const LikesRepository = require('../../Domains/likes/LikesRepository');
 
 class LikesRepositoryPostgres extends LikesRepository {
@@ -10,19 +7,12 @@ class LikesRepositoryPostgres extends LikesRepository {
     this._idGenerator = idGenerator;
   }
 
-  async addLikeComment({ userId, commentId, threadId }) {
+  async addLikeComment({ userId, commentId }) {
     const id = `commentlike-${this._idGenerator()}`;
     const query = {
       text: 'INSERT INTO commentlikes VALUES($1, $2, $3) RETURNING id',
       values: [id, commentId, userId],
     };
-
-    // TODO: move the validation logic to use case
-    const threadRepositoryPostgres = new ThreadRepositoryPostgres(this._pool, this._idGenerator);
-    await threadRepositoryPostgres.checkThreadAvailability(threadId);
-
-    const commentRepositoryPostgres = new CommentRepositoryPostgres(this._pool, this._idGenerator);
-    await commentRepositoryPostgres.checkCommentIsAvailableInThread(commentId, threadId);
 
     await this._pool.query(query);
   }
@@ -62,11 +52,14 @@ class LikesRepositoryPostgres extends LikesRepository {
   }
 
   async getCommentLikesForEveryComment(comments) {
-    for (const comment of comments) {
-      comment.likeCount = await this.getLikeCommentByCommentId(comment.id);
-    }
+    const updatedComments = await Promise.all(
+      comments.map(async (comment) => {
+        const likeCount = await this.getLikeCommentByCommentId(comment.id);
+        return { ...comment, likeCount };
+      }),
+    );
 
-    return comments;
+    return updatedComments;
   }
 }
 
