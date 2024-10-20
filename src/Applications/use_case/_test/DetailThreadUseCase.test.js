@@ -6,6 +6,9 @@ const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const CommentRepository = require('../../../Domains/comments/CommentsRepository');
 const ReplayRepository = require('../../../Domains/replays/ReplayRepository');
 
+const AddLike = require('../../../Domains/likes/entity/AddLike');
+const LikesRepository = require('../../../Domains/likes/LikesRepository');
+
 describe('DetailThreadUseCase', () => {
   it('orchestrating detail thread action correctly', async () => {
     const id = 'thread-557';
@@ -22,6 +25,7 @@ describe('DetailThreadUseCase', () => {
           username: 'dicoding',
           date: '2024-10-16T11:25:30.555Z',
           content: 'lorem ipsum dolor sit amet',
+          likeCount: 1,
           replies: [
             {
               id: 'reply-data999',
@@ -63,14 +67,36 @@ describe('DetailThreadUseCase', () => {
       },
     ];
 
+    const addLike = new AddLike({
+      userId: 'user-123',
+      commentId: 'comment-test2024',
+      threadId: 'thread-557',
+    });
+
+    const mockAddLike = [
+      {
+        id: 'comment-test2024',
+        username: 'dicoding',
+        date: '2024-10-16T11:25:30.555Z',
+        content: 'lorem ipsum dolor sit amet',
+        is_deleted: false,
+        likeCount: 1,
+      },
+    ];
+
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplayRepository = new ReplayRepository();
+    const mockLikesRepository = new LikesRepository();
 
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockDetailThread));
     mockCommentRepository.getAllCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockDetailComment));
+    mockLikesRepository.addLikeComment = jest.fn()
+      .mockImplementation(() => Promise.resolve(addLike));
+    mockLikesRepository.getCommentLikesForEveryComment = jest.fn()
+      .mockImplementation(() => Promise.resolve(mockAddLike));
     mockReplayRepository.fetchAllReplaysByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockDetailReplay));
 
@@ -78,6 +104,7 @@ describe('DetailThreadUseCase', () => {
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replayRepository: mockReplayRepository,
+      likesRepository: mockLikesRepository,
     });
 
     const detailThread = await getThreadUseCase.execute(id);
@@ -106,6 +133,7 @@ describe('DetailThreadUseCase', () => {
           username: 'dicoding',
           date: '2024-10-16T11:25:30.555Z',
           content: '**komentar telah dihapus**',
+          likeCount: 1,
           replies: [
             {
               id: 'reply-data999',
@@ -147,14 +175,36 @@ describe('DetailThreadUseCase', () => {
       },
     ];
 
+    const addLike = new AddLike({
+      userId: 'user-123',
+      commentId: 'comment-test2024',
+      threadId: 'thread-557',
+    });
+
+    const mockAddLike = [
+      {
+        id: 'comment-test2024',
+        username: 'dicoding',
+        date: '2024-10-16T11:25:30.555Z',
+        content: 'lorem ipsum dolor sit amet',
+        is_deleted: true,
+        likeCount: 1,
+      },
+    ];
+
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplayRepository = new ReplayRepository();
+    const mockLikesRepository = new LikesRepository();
 
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockDetailThread));
     mockCommentRepository.getAllCommentsByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockDetailComment));
+    mockLikesRepository.addLikeComment = jest.fn()
+      .mockImplementation(() => Promise.resolve(addLike));
+    mockLikesRepository.getCommentLikesForEveryComment = jest.fn()
+      .mockImplementation(() => Promise.resolve(mockAddLike));
     mockReplayRepository.fetchAllReplaysByThreadId = jest.fn()
       .mockImplementation(() => Promise.resolve(mockDetailReplay));
 
@@ -162,6 +212,7 @@ describe('DetailThreadUseCase', () => {
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replayRepository: mockReplayRepository,
+      likesRepository: mockLikesRepository,
     });
 
     const detailThread = await getThreadUseCase.execute(id);

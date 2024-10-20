@@ -45,6 +45,10 @@ describe('DomainErrorTranslator', () => {
       .toStrictEqual(new InvariantError('tidak dapat menghapus replay karena properti yang dibutuhkan tidak ada'));
     expect(DomainErrorTranslator.translate(new Error('DELETE_REPLAY.NOT_MEET_DATA_TYPE_SPECIFICATION')))
       .toStrictEqual(new InvariantError('tidak dapat menghapus replay karena tipe data tidak sesuai'));
+    expect(DomainErrorTranslator.translate(new Error('ADD_LIKE.NOT_CONTAIN_NEEDED_PROPERTY')))
+      .toStrictEqual(new InvariantError('tidak dapat menambahkan like pada comment karena properti yang dibutuhkan tidak ada'));
+    expect(DomainErrorTranslator.translate(new Error('ADD_LIKE.NOT_MEET_DATA_TYPE_SPECIFICATION')))
+      .toStrictEqual(new InvariantError('tidak dapat menambahkan like pada comment karena tipe data tidak sesuai'));
 
     expect(DomainErrorTranslator.translate(new Error('THREAD_REPOSITORY_POSTGRES.THREAD_NOT_FOUND')))
       .toStrictEqual(new NotFoundError('tidak dapat menemukan thread yang dicari'));

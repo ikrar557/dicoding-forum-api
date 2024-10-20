@@ -2,44 +2,30 @@ const DetailComment = require('../../Domains/comments/entities/DetailComment');
 const DetailReplay = require('../../Domains/replays/entities/DetailReplay');
 
 class DetailThreadUseCase {
-  constructor({ threadRepository, commentRepository, replayRepository }) {
+  constructor({ threadRepository, commentRepository, replayRepository, likesRepository }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
     this._replayRepository = replayRepository;
+    this._likesRepository = likesRepository;
   }
 
   async execute(id) {
     const thread = await this._threadRepository.getThreadById(id);
-    const comments = await this._commentRepository.getAllCommentsByThreadId(id);
+
+    let comments = await this._commentRepository.getAllCommentsByThreadId(id);
+
     const replays = await this._replayRepository.fetchAllReplaysByThreadId(id);
 
-    const modifiedComments = this._modifyCommentsWithReplies(comments, replays);
+    comments = await this._likesRepository.getCommentLikesForEveryComment(comments);
 
-    return { ...thread, comments: modifiedComments };
-  }
-
-  _modifyCommentsWithReplies(comments, replays) {
-    return comments.map((comment) => ({
+    comments = comments.map((comment) => ({
       ...new DetailComment(comment),
-      content: this._getModifiedContent(comment, 'comment'),
-      replies: this._getModifiedReplies(comment.id, replays),
+      likeCount: comment.likeCount,
+      replies: replays.filter((reply) => reply.comment_id === comment.id)
+        .map((reply) => ({ ...new DetailReplay(reply) })),
     }));
-  }
 
-  _getModifiedReplies(commentId, replays) {
-    return replays
-      .filter((replay) => replay.comment_id === commentId)
-      .map((replay) => ({
-        ...new DetailReplay(replay),
-        content: this._getModifiedContent(replay, 'replay'),
-      }));
-  }
-
-  _getModifiedContent(item, type) {
-    if (item.is_deleted) {
-      return type === 'comment' ? '**komentar telah dihapus**' : '**balasan telah dihapus**';
-    }
-    return item.content;
+    return { ...thread, comments };
   }
 }
 

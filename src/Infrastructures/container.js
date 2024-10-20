@@ -28,6 +28,9 @@ const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgre
 const ReplayRepository = require('../Domains/replays/ReplayRepository');
 const ReplayRepositoryPostgres = require('./repository/ReplayRepositoryPostgres');
 
+const LikesRepository = require('../Domains/likes/LikesRepository');
+const LikesRepositoryPostgres = require('./repository/LikesRepositoryPostgres');
+
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 
@@ -44,6 +47,8 @@ const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseC
 
 const AddReplayUseCase = require('../Applications/use_case/AddReplayUseCase');
 const DeleteReplayUseCase = require('../Applications/use_case/DeleteReplayUseCase');
+
+const LikeOrUnlikeCommentUseCase = require('../Applications/use_case/LikeOrUnlikeCommentUseCase');
 
 // creating container
 const container = createContainer();
@@ -128,6 +133,20 @@ container.register([
   {
     key: ReplayRepository.name,
     Class: ReplayRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: LikesRepository.name,
+    Class: LikesRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -263,6 +282,10 @@ container.register([
           name: 'replayRepository',
           internal: ReplayRepository.name,
         },
+        {
+          name: 'likesRepository',
+          internal: LikesRepository.name,
+        },
       ],
     },
   },
@@ -309,6 +332,19 @@ container.register([
         {
           name: 'replayRepository',
           internal: ReplayRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: LikeOrUnlikeCommentUseCase.name,
+    Class: LikeOrUnlikeCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'likesRepository',
+          internal: LikesRepository.name,
         },
       ],
     },
