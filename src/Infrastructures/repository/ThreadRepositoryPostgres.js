@@ -38,9 +38,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
     }
 
     const thread = result.rows[0];
-    return new DetailThread({
-      ...thread,
-    });
+    return new DetailThread(thread);
   }
 
   async addThread(threadData) {

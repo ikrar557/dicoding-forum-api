@@ -25,12 +25,10 @@ describe('AddReplayUseCase', () => {
     const mockCommentRepository = new CommentRepository();
     const mockReplayRepository = new ReplayRepository();
 
-    mockThreadRepository.checkThreadAvailability = jest.fn()
-      .mockImplementation(() => Promise.resolve());
-    mockCommentRepository.checkCommentIsAvailableInThread = jest.fn()
-      .mockImplementation(() => Promise.resolve());
-    mockReplayRepository.addReplay = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockAddedReplay));
+    mockThreadRepository.checkThreadAvailability = jest.fn(() => Promise.resolve());
+    mockCommentRepository.checkCommentIsAvailableInThread = jest.fn(() => Promise.resolve());
+    mockReplayRepository.addReplay = jest.fn(() => Promise.resolve(mockAddedReplay));
+
 
     const addReplayUseCase = new AddReplayUseCase({
       threadRepository: mockThreadRepository,

@@ -10,7 +10,7 @@ exports.up = (pgm) => {
     },
     date: {
       type: 'VARCHAR',
-      notNull: true,
+      default: pgm.func('current_timestamp'),
     },
     comment_id: {
       type: 'VARCHAR',

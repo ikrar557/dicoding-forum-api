@@ -20,18 +20,12 @@ describe('GetAuthenticationUseCase', () => {
     const mockAuthenticationTokenManager = new AuthenticationTokenManager();
     const mockPasswordHash = new PasswordHash();
 
-    mockUserRepository.getPasswordByUsername = jest.fn()
-      .mockImplementation(() => Promise.resolve('encrypted_password'));
-    mockPasswordHash.comparePassword = jest.fn()
-      .mockImplementation(() => Promise.resolve());
-    mockAuthenticationTokenManager.createAccessToken = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockedAuthentication.accessToken));
-    mockAuthenticationTokenManager.createRefreshToken = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockedAuthentication.refreshToken));
-    mockUserRepository.getIdByUsername = jest.fn()
-      .mockImplementation(() => Promise.resolve('user-123'));
-    mockAuthenticationRepository.addToken = jest.fn()
-      .mockImplementation(() => Promise.resolve());
+    mockUserRepository.getPasswordByUsername = jest.fn(() => Promise.resolve('encrypted_password'));
+    mockPasswordHash.comparePassword = jest.fn(() => Promise.resolve());
+    mockAuthenticationTokenManager.createAccessToken = jest.fn(() => Promise.resolve(mockedAuthentication.accessToken));
+    mockAuthenticationTokenManager.createRefreshToken = jest.fn(() => Promise.resolve(mockedAuthentication.refreshToken));
+    mockUserRepository.getIdByUsername = jest.fn(() => Promise.resolve('user-123'));
+    mockAuthenticationRepository.addToken = jest.fn(() => Promise.resolve());
 
     const loginUserUseCase = new LoginUserUseCase({
       userRepository: mockUserRepository,

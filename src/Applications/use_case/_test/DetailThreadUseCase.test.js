@@ -89,16 +89,12 @@ describe('DetailThreadUseCase', () => {
     const mockReplayRepository = new ReplayRepository();
     const mockLikesRepository = new LikesRepository();
 
-    mockThreadRepository.getThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockDetailThread));
-    mockCommentRepository.getAllCommentsByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockDetailComment));
-    mockLikesRepository.addLikeComment = jest.fn()
-      .mockImplementation(() => Promise.resolve(addLike));
-    mockLikesRepository.getCommentLikesForEveryComment = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockAddLike));
-    mockReplayRepository.fetchAllReplaysByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockDetailReplay));
+    mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve(mockDetailThread));
+    mockCommentRepository.getAllCommentsByThreadId = jest.fn(() => Promise.resolve(mockDetailComment));
+    mockLikesRepository.addLikeComment = jest.fn(() => Promise.resolve(addLike));
+    mockLikesRepository.getCommentLikesForEveryComment = jest.fn(() => Promise.resolve(mockAddLike));
+    mockReplayRepository.fetchAllReplaysByThreadId = jest.fn(() => Promise.resolve(mockDetailReplay));
+
 
     const getThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,
@@ -197,16 +193,11 @@ describe('DetailThreadUseCase', () => {
     const mockReplayRepository = new ReplayRepository();
     const mockLikesRepository = new LikesRepository();
 
-    mockThreadRepository.getThreadById = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockDetailThread));
-    mockCommentRepository.getAllCommentsByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockDetailComment));
-    mockLikesRepository.addLikeComment = jest.fn()
-      .mockImplementation(() => Promise.resolve(addLike));
-    mockLikesRepository.getCommentLikesForEveryComment = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockAddLike));
-    mockReplayRepository.fetchAllReplaysByThreadId = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockDetailReplay));
+    mockThreadRepository.getThreadById = jest.fn(() => Promise.resolve(mockDetailThread));
+    mockCommentRepository.getAllCommentsByThreadId = jest.fn(() => Promise.resolve(mockDetailComment));
+    mockLikesRepository.addLikeComment = jest.fn(() => Promise.resolve(addLike));
+    mockLikesRepository.getCommentLikesForEveryComment = jest.fn(() => Promise.resolve(mockAddLike));
+    mockReplayRepository.fetchAllReplaysByThreadId = jest.fn(() => Promise.resolve(mockDetailReplay));
 
     const getThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,

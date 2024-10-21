@@ -11,9 +11,10 @@ describe('DeleteCommentUseCase', () => {
 
     const mockCommentRepository = new CommentRepository();
 
-    mockCommentRepository.checkCommentOwner = jest.fn().mockImplementation(() => Promise.resolve());
-    mockCommentRepository.checkCommentIsAvailableInThread = jest.fn().mockImplementation(() => Promise.resolve());
-    mockCommentRepository.deleteCommentById = jest.fn().mockImplementation(() => Promise.resolve());
+    mockCommentRepository.checkCommentOwner = jest.fn(() => Promise.resolve());
+    mockCommentRepository.checkCommentIsAvailableInThread = jest.fn(() => Promise.resolve());
+    mockCommentRepository.deleteCommentById = jest.fn(() => Promise.resolve());
+
 
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,
