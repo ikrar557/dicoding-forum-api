@@ -71,10 +71,8 @@ jobs:
             mkdir -p ~/dicoding-forum-api
 
             # Clone the repository
-            git clone https://github.com/ikrar557/dicoding-forum-api.git ~/dicoding-forum-api
+            git clone -b v2 https://github.com/ikrar557/dicoding-forum-api.git ~/dicoding-forum-api
             cd ~/dicoding-forum-api
-            git config pull.rebase false  # Handle divergent branches
-            git pull origin v2
 
             # Install Node.js if not installed
             if ! command -v npm &> /dev/null; then
