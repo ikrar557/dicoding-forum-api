@@ -37,9 +37,11 @@ jobs:
         run: npm install
 
       - name: Run migrations
+        env:
+          DATABASE_URL: postgres://postgres:secretpassword@localhost:5432/forumapi
         run: npm run migrate up
 
       - name: Run tests
         env:
-          DATABASE_URL: postgres://postgres:@localhost:5432/forumapi
+          DATABASE_URL: postgres://postgres:secretpassword@localhost:5432/forumapi
         run: npm run test
