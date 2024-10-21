@@ -1,47 +1,54 @@
 name: Continuous Integration
 
 on:
-  push:
+  pull_request:
     branches:
-      - v2
+      - master
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [18.0]
+
     services:
       postgres:
-        image: postgres:latest
+        image: postgres
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: secretpassword
-          POSTGRES_DB: forumapi
-        ports:
-          - 5432:5432
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: forumapi_test
+
         options: >-
-          --health-cmd "pg_isready -U postgres"
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run migrations
+          node-version: ${{ matrix.node-version }}
+      - name: npm install migrate and test
+        run: |
+          npm install
+          npm run migrate up
+          npm run test
         env:
-          DATABASE_URL: postgres://postgres:secretpassword@localhost:5432/forumapi
-        run: npm run migrate up
-
-      - name: Run tests
-        env:
-          DATABASE_URL: postgres://postgres:secretpassword@localhost:5432/forumapi
-        run: npm run test
+          CI: true
+          HOST: localhost
+          PORT: 3000
+          PGHOST: localhost
+          PGPORT: 5432
+          PGUSER: postgres
+          PGPASSWORD: mysecretpassword
+          PGDATABASE: forumapi_test
+          ACCESS_TOKEN_KEY: secret
+          REFRESH_TOKEN_KEY: terces
+          ACCESS_TOKEN_AGE: 3600
