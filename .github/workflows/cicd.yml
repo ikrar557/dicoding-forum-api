@@ -66,10 +66,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            if [ ! -d "~/dicoding-forum-api" ]; then
-              mkdir -p ~/dicoding-forum-api
-              git clone https://github.com/your-repo-url/dicoding-forum-api.git ~/dicoding-forum-api
-            fi
+            rm -rf ~/dicoding-forum-api
+            mkdir -p ~/dicoding-forum-api
+            git clone https://github.com/ikrar557/dicoding-forum-api.git ~/dicoding-forum-api
             cd ~/dicoding-forum-api
 
             git pull origin v2
