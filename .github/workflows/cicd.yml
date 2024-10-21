@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: CI/CD Pipeline
 
 on:
   push:
@@ -52,3 +52,38 @@ jobs:
           ACCESS_TOKEN_KEY: secret
           REFRESH_TOKEN_KEY: terces
           ACCESS_TOKEN_AGE: 3600
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH and deploy app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            if [ ! -d "~/dicoding-forum-api" ]; then
+              mkdir -p ~/dicoding-forum-api
+              git clone https://github.com/your-repo-url/dicoding-forum-api.git ~/dicoding-forum-api
+            fi
+            cd ~/dicoding-forum-api
+
+            git pull origin v2
+
+            if ! command -v npm &> /dev/null; then
+              curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+              sudo apt-get install -y nodejs
+            fi
+
+            if ! command -v pm2 &> /dev/null; then
+              npm install pm2@latest -g
+            fi
+
+            npm install
+            npm run migrate up
+
+            pm2 restart dicoding-forum-api
