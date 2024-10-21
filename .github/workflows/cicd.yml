@@ -94,7 +94,10 @@ jobs:
             npm install
             npm run migrate up
 
-            # Restart the app using PM2
+            if pm2 list | grep -q 'dicoding-forum-api'; then
             pm2 restart dicoding-forum-api
+            else
+            pm2 start npm --name "dicoding-forum-api" -- run start
+            fi
   
   
