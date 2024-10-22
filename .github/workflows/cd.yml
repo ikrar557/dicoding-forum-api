@@ -1,60 +1,14 @@
-name: CI/CD Pipeline
+name: CD Pipeline
 
 on:
-  push:
-    branches:
-      - v2
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.0]
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: mysecretpassword
-          POSTGRES_DB: forumapi_test
-
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    steps:
-      - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install migrate and test
-        run: |
-          npm install
-          npm run migrate up
-          npm run test
-        env:
-          CI: true
-          HOST: localhost
-          PORT: 3000
-          PGHOST: localhost
-          PGPORT: 5432
-          PGUSER: postgres
-          PGPASSWORD: mysecretpassword
-          PGDATABASE: forumapi_test
-          ACCESS_TOKEN_KEY: secret
-          REFRESH_TOKEN_KEY: terces
-          ACCESS_TOKEN_AGE: 3600
-
   deploy:
-    needs: test
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -97,5 +51,3 @@ jobs:
             else
             pm2 start npm --name "dicoding-forum-api" -- run start
             fi
-  
-  
