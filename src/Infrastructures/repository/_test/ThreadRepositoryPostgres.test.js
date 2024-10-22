@@ -96,15 +96,15 @@ describe('ThreadRepositoryPostgres', () => {
 
     it('should return detail thread correctly when thread is available', async () => {
       await ThreadsTableTestHelper.addThread({});
-      // Arrange
+
       const threadId = 'thread-557';
 
-      // Action
+
       const fakeIdGenerator = () => '557';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
       const thread = await threadRepositoryPostgres.getThreadById(threadId);
 
-      // Action & Assert
+
       await expect(threadRepositoryPostgres.getThreadById(threadId))
         .resolves.not.toThrowError(NotFoundError);
       expect(thread).toStrictEqual(new DetailThread({

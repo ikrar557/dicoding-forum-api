@@ -95,7 +95,6 @@ describe('DetailThreadUseCase', () => {
     mockLikesRepository.getCommentLikesForEveryComment = jest.fn(() => Promise.resolve(mockAddLike));
     mockReplayRepository.fetchAllReplaysByThreadId = jest.fn(() => Promise.resolve(mockDetailReplay));
 
-
     const getThreadUseCase = new DetailThreadUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,

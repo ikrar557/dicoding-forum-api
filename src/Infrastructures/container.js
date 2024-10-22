@@ -1,13 +1,13 @@
 /* istanbul ignore file */
 const { createContainer } = require('instances-container');
 
-// external agency
+
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
 
-// service (repository, helper, manager, etc)
+
 const UserRepository = require('../Domains/users/UserRepository');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 
@@ -31,7 +31,7 @@ const ReplayRepositoryPostgres = require('./repository/ReplayRepositoryPostgres'
 const LikesRepository = require('../Domains/likes/LikesRepository');
 const LikesRepositoryPostgres = require('./repository/LikesRepositoryPostgres');
 
-// use case
+
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 
 const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
@@ -50,10 +50,10 @@ const DeleteReplayUseCase = require('../Applications/use_case/DeleteReplayUseCas
 
 const LikeOrUnlikeCommentUseCase = require('../Applications/use_case/LikeOrUnlikeCommentUseCase');
 
-// creating container
+
 const container = createContainer();
 
-// registering services and repository
+
 container.register([
   {
     key: UserRepository.name,
@@ -160,7 +160,7 @@ container.register([
   },
 ]);
 
-// registering use cases
+
 container.register([
   {
     key: AddUserUseCase.name,

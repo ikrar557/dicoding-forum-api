@@ -17,7 +17,6 @@ describe('DeleteReplayUseCase', () => {
     mockReplayRepository.checkReplayOwner = jest.fn(() => Promise.resolve());
     mockReplayRepository.deleteReplayById = jest.fn(() => Promise.resolve());
 
-
     const deleteReplayUseCase = new DeleteReplayUseCase({
       replayRepository: mockReplayRepository,
     });

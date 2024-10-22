@@ -113,7 +113,7 @@ describe('/users endpoint', () => {
     });
 
     it('should response 400 when username unavailable', async () => {
-      // Arrange
+
       await UsersTableTestHelper.addUser({ username: 'dicoding' });
       const requestPayload = {
         username: 'dicoding',
@@ -122,14 +122,14 @@ describe('/users endpoint', () => {
       };
       const server = await createServer(container);
 
-      // Action
+
       const response = await server.inject({
         method: 'POST',
         url: '/users',
         payload: requestPayload,
       });
 
-      // Assert
+
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');

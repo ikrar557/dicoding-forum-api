@@ -32,7 +32,6 @@ describe('AddUserUseCase', () => {
 
     mockUserRepository.addUser = jest.fn(() => Promise.resolve(mockRegisteredUser));
 
-
     /** creating use case instance */
     const getUserUseCase = new AddUserUseCase({
       userRepository: mockUserRepository,
