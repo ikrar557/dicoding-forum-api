@@ -15,7 +15,6 @@ describe('DeleteCommentUseCase', () => {
     mockCommentRepository.checkCommentIsAvailableInThread = jest.fn(() => Promise.resolve());
     mockCommentRepository.deleteCommentById = jest.fn(() => Promise.resolve());
 
-
     const deleteCommentUseCase = new DeleteCommentUseCase({
       commentRepository: mockCommentRepository,
     });

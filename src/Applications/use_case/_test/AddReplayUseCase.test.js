@@ -29,7 +29,6 @@ describe('AddReplayUseCase', () => {
     mockCommentRepository.checkCommentIsAvailableInThread = jest.fn(() => Promise.resolve());
     mockReplayRepository.addReplay = jest.fn(() => Promise.resolve(mockAddedReplay));
 
-
     const addReplayUseCase = new AddReplayUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
