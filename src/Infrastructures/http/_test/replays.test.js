@@ -121,10 +121,10 @@ describe('/threads/{threadId}/comments/{commentId}/replies', () => {
             const responseJson = JSON.parse(response.payload);
             expect(response.statusCode).toEqual(201);
             expect(responseJson.status).toEqual('success');
-            expect(responseJson.data.addedReply).toBeDefined();
-            expect(responseJson.data.addedReply.id).toBeDefined();
-            expect(responseJson.data.addedReply.content).toEqual(requestPayload.content);
-            expect(responseJson.data.addedReply.owner).toBeDefined();
+            expect(responseJson.data.addedReplay).toBeDefined();
+            expect(responseJson.data.addedReplay.id).toBeDefined();
+            expect(responseJson.data.addedReplay.content).toEqual(requestPayload.content);
+            expect(responseJson.data.addedReplay.owner).toBeDefined();
         });
     });
 })
