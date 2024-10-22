@@ -1,14 +1,12 @@
 name: CD Pipeline
 
 on:
-  workflow_run:
-    workflows: ["CI Pipeline"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -25,18 +23,13 @@ jobs:
             mkdir -p ~/dicoding-forum-api
 
             # Clone the repository
-            git clone -b v2 https://github.com/ikrar557/dicoding-forum-api.git ~/dicoding-forum-api
+            git clone https://github.com/ikrar557/dicoding-forum-api.git ~/dicoding-forum-api
             cd ~/dicoding-forum-api
 
             # Install Node.js if not installed
             if ! command -v npm &> /dev/null; then
               curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
               sudo apt-get install -y nodejs
-            fi
-
-            # Install PM2 if not installed
-            if ! command -v pm2 &> /dev/null; then
-              sudo npm install pm2@latest -g
             fi
 
             # Create .env file from GitHub secret
