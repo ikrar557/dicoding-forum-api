@@ -66,6 +66,13 @@ const createServer = async (container) => {
     },
   ]);
 
+  server.route({
+    method: 'GET',
+    path: '/',
+    handler: () => ({
+      value: 'Selamat datang di Dicoding Forum API!',
+    }),
+  });
 
   server.ext('onPreResponse', (request, h) => {
     const { response } = request;
