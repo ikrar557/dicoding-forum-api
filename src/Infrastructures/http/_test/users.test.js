@@ -14,23 +14,19 @@ describe('/users endpoint', () => {
 
   describe('when POST /users', () => {
     it('should response 201 and persisted user', async () => {
-      // Arrange
       const requestPayload = {
         username: 'dicoding',
         password: 'secret',
         fullname: 'Dicoding Indonesia',
       };
-      // eslint-disable-next-line no-undef
       const server = await createServer(container);
 
-      // Action
       const response = await server.inject({
         method: 'POST',
         url: '/users',
         payload: requestPayload,
       });
 
-      // Assert
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');
@@ -38,21 +34,18 @@ describe('/users endpoint', () => {
     });
 
     it('should response 400 when request payload not contain needed property', async () => {
-      // Arrange
       const requestPayload = {
         fullname: 'Dicoding Indonesia',
         password: 'secret',
       };
       const server = await createServer(container);
 
-      // Action
       const response = await server.inject({
         method: 'POST',
         url: '/users',
         payload: requestPayload,
       });
 
-      // Assert
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
@@ -60,7 +53,6 @@ describe('/users endpoint', () => {
     });
 
     it('should response 400 when request payload not meet data type specification', async () => {
-      // Arrange
       const requestPayload = {
         username: 'dicoding',
         password: 'secret',
@@ -68,14 +60,12 @@ describe('/users endpoint', () => {
       };
       const server = await createServer(container);
 
-      // Action
       const response = await server.inject({
         method: 'POST',
         url: '/users',
         payload: requestPayload,
       });
 
-      // Assert
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
@@ -83,7 +73,6 @@ describe('/users endpoint', () => {
     });
 
     it('should response 400 when username more than 50 character', async () => {
-      // Arrange
       const requestPayload = {
         username: 'dicodingindonesiadicodingindonesiadicodingindonesiadicoding',
         password: 'secret',
@@ -91,14 +80,12 @@ describe('/users endpoint', () => {
       };
       const server = await createServer(container);
 
-      // Action
       const response = await server.inject({
         method: 'POST',
         url: '/users',
         payload: requestPayload,
       });
 
-      // Assert
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
@@ -106,7 +93,6 @@ describe('/users endpoint', () => {
     });
 
     it('should response 400 when username contain restricted character', async () => {
-      // Arrange
       const requestPayload = {
         username: 'dicoding indonesia',
         password: 'secret',
@@ -114,14 +100,12 @@ describe('/users endpoint', () => {
       };
       const server = await createServer(container);
 
-      // Action
       const response = await server.inject({
         method: 'POST',
         url: '/users',
         payload: requestPayload,
       });
 
-      // Assert
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');

@@ -1,6 +1,5 @@
 const AddedComment = require('../../Domains/comments/entities/AddedComment');
 const CommentRepository = require('../../Domains/comments/CommentsRepository');
-const ThreadRepositoryPostgres = require('./ThreadRepositoryPostgres');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 
@@ -31,9 +30,6 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const id = `comment-${this._idGenerator()}`;
     const date = new Date().toISOString();
-
-    const threadRepositoryPostgres = new ThreadRepositoryPostgres(this._pool, this._idGenerator);
-    await threadRepositoryPostgres.checkThreadAvailability(thread_id);
 
     const query = {
       text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5) RETURNING id, content, user_id',

@@ -1,7 +1,7 @@
 {
   "user": "postgres",
-  "password": "",
+  "password": "r4ngk1ng",
   "host": "localhost",
   "port": 5432,
-  "database": "authapi_test"
+  "database": "forumapi_test"
 }

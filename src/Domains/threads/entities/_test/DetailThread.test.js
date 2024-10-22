@@ -33,7 +33,6 @@ describe('DetailThread entites', () => {
 
     const detailThread = new DetailThread(payload);
 
-    // assert
     expect(detailThread.id).toEqual(payload.id);
     expect(detailThread.title).toEqual(payload.title);
     expect(detailThread.body).toEqual(payload.body);

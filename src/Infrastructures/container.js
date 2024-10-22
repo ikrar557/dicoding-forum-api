@@ -25,8 +25,11 @@ const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres'
 const CommentRepository = require('../Domains/comments/CommentsRepository');
 const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
 
-const ReplayRepository = require('../Domains/replays/ReplayRepository')
-const ReplayRepositoryPostgres = require('./repository/ReplayRepositoryPostgres')
+const ReplayRepository = require('../Domains/replays/ReplayRepository');
+const ReplayRepositoryPostgres = require('./repository/ReplayRepositoryPostgres');
+
+const LikesRepository = require('../Domains/likes/LikesRepository');
+const LikesRepositoryPostgres = require('./repository/LikesRepositoryPostgres');
 
 // use case
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
@@ -42,7 +45,10 @@ const DetailThreadUseCase = require('../Applications/use_case/DetailThreadUseCas
 const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
 const DeleteCommentUseCase = require('../Applications/use_case/DeleteCommentUseCase');
 
-const AddReplayUseCase = require('../Applications/use_case/AddReplayUseCase')
+const AddReplayUseCase = require('../Applications/use_case/AddReplayUseCase');
+const DeleteReplayUseCase = require('../Applications/use_case/DeleteReplayUseCase');
+
+const LikeOrUnlikeCommentUseCase = require('../Applications/use_case/LikeOrUnlikeCommentUseCase');
 
 // creating container
 const container = createContainer();
@@ -127,6 +133,20 @@ container.register([
   {
     key: ReplayRepository.name,
     Class: ReplayRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: LikesRepository.name,
+    Class: LikesRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -237,6 +257,10 @@ container.register([
           name: 'commentRepository',
           internal: CommentRepository.name,
         },
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
       ],
     },
   },
@@ -253,6 +277,14 @@ container.register([
         {
           name: 'commentRepository',
           internal: CommentRepository.name,
+        },
+        {
+          name: 'replayRepository',
+          internal: ReplayRepository.name,
+        },
+        {
+          name: 'likesRepository',
+          internal: LikesRepository.name,
         },
       ],
     },
@@ -277,12 +309,54 @@ container.register([
       injectType: 'destructuring',
       dependencies: [
         {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
+        {
           name: 'replayRepository',
           internal: ReplayRepository.name,
         },
       ],
     },
-  }
+  },
+  {
+    key: DeleteReplayUseCase.name,
+    Class: DeleteReplayUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'replayRepository',
+          internal: ReplayRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: LikeOrUnlikeCommentUseCase.name,
+    Class: LikeOrUnlikeCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
+        {
+          name: 'likesRepository',
+          internal: LikesRepository.name,
+        },
+      ],
+    },
+  },
 ]);
 
 module.exports = container;

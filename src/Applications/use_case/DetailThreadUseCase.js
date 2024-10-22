@@ -1,24 +1,31 @@
+const DetailComment = require('../../Domains/comments/entities/DetailComment');
+const DetailReplay = require('../../Domains/replays/entities/DetailReplay');
+
 class DetailThreadUseCase {
-  constructor({ threadRepository, commentRepository }) {
+  constructor({ threadRepository, commentRepository, replayRepository, likesRepository }) {
     this._threadRepository = threadRepository;
     this._commentRepository = commentRepository;
+    this._replayRepository = replayRepository;
+    this._likesRepository = likesRepository;
   }
 
   async execute(id) {
     const thread = await this._threadRepository.getThreadById(id);
-    const comments = await this._commentRepository.getAllCommentsByThreadId(id);
 
-    const modifiedComments = comments.map((comment) => {
-      if (comment.is_deleted) {
-        return {
-          ...comment,
-          content: '**komentar telah dihapus**',
-        };
-      }
-      return comment;
-    });
+    let comments = await this._commentRepository.getAllCommentsByThreadId(id);
 
-    return { ...thread, comments: modifiedComments };
+    const replays = await this._replayRepository.fetchAllReplaysByThreadId(id);
+
+    comments = await this._likesRepository.getCommentLikesForEveryComment(comments);
+
+    comments = comments.map((comment) => ({
+      ...new DetailComment(comment),
+      likeCount: comment.likeCount,
+      replies: replays.filter((reply) => reply.comment_id === comment.id)
+        .map((reply) => ({ ...new DetailReplay(reply) })),
+    }));
+
+    return { ...thread, comments };
   }
 }
 

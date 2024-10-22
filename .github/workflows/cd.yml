@@ -1,0 +1,46 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH and deploy app
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            # Remove old directory and create a new one
+            rm -rf ~/dicoding-forum-api
+            mkdir -p ~/dicoding-forum-api
+
+            # Clone the repository
+            git clone https://github.com/ikrar557/dicoding-forum-api.git ~/dicoding-forum-api
+            cd ~/dicoding-forum-api
+
+            # Install Node.js if not installed
+            if ! command -v npm &> /dev/null; then
+              curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+              sudo apt-get install -y nodejs
+            fi
+
+            # Create .env file from GitHub secret
+            echo "${{ secrets.ENV_FILE }}" > .env
+
+            # Install dependencies and run migrations
+            npm install
+            npm run migrate up
+
+            if pm2 list | grep -q 'dicoding-forum-api'; then
+            pm2 restart dicoding-forum-api
+            else
+            pm2 start npm --name "dicoding-forum-api" -- run start
+            fi

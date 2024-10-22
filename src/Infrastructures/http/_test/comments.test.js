@@ -113,6 +113,10 @@ describe('/threads/{threadId/comments endpoint', () => {
         },
       });
 
+      if (response.statusCode === 500) {
+        console.log('Internal Server Error:', response.stack);
+      }
+
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(201);
       expect(responseJson.status).toEqual('success');

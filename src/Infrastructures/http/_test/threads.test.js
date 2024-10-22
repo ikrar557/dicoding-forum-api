@@ -144,6 +144,10 @@ describe('test /threads endpoint', () => {
         url: '/threads/thread-557',
       });
 
+      if (response.statusCode !== 200) {
+        console.log('error :', response.stack);
+      }
+
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');

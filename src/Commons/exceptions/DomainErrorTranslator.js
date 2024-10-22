@@ -27,12 +27,17 @@ DomainErrorTranslator._directories = {
   'DELETE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat menghapus comment karena tipe data tidak sesuai'),
   'ADD_REPLAY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat membuat replay baru karena properti yang dibutuhkan tidak ada'),
   'ADD_REPLAY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat membuat replay baru karena tipe data tidak sesuai'),
+  'DELETE_REPLAY.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat menghapus replay karena properti yang dibutuhkan tidak ada'),
+  'DELETE_REPLAY.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat menghapus replay karena tipe data tidak sesuai'),
+  'ADD_LIKE.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError('tidak dapat menambahkan like pada comment karena properti yang dibutuhkan tidak ada'),
+  'ADD_LIKE.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('tidak dapat menambahkan like pada comment karena tipe data tidak sesuai'),
 
   'THREAD_REPOSITORY_POSTGRES.THREAD_NOT_FOUND': new NotFoundError('tidak dapat menemukan thread yang dicari'),
   'COMMENT_REPOSITORY_POSTGRES.COMMENT_NOT_FOUND': new NotFoundError('tidak dapat menemukan comment yang dicari'),
+  'REPLAY_REPOSITORY_POSTGRES.REPLAY_NOT_FOUND': new NotFoundError('tidak dapat menemukan replay yang dicari'),
 
   'COMMENT_REPOSITORY_POSTGRES.NOT_THE_COMMENT_OWNER': new AuthorizationError('tidak dapat menghapus comment karena user bukan pemilik comment'),
-  'REPLY_REPOSITORY_POSTGRES.NOT_THE_REPLY_OWNER': new AuthorizationError('tidak dapat menghapus replay karena user bukan pemilik replay'),
+  'REPLAY_REPOSITORY_POSTGRES.NOT_THE_REPLAY_OWNER': new AuthorizationError('tidak dapat menghapus replay karena user bukan pemilik replay'),
 };
 
 module.exports = DomainErrorTranslator;
