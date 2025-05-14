@@ -1,12 +1,10 @@
 /* istanbul ignore file */
 const { createContainer } = require('instances-container');
 
-
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
-
 
 const UserRepository = require('../Domains/users/UserRepository');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
@@ -31,7 +29,6 @@ const ReplayRepositoryPostgres = require('./repository/ReplayRepositoryPostgres'
 const LikesRepository = require('../Domains/likes/LikesRepository');
 const LikesRepositoryPostgres = require('./repository/LikesRepositoryPostgres');
 
-
 const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 
 const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
@@ -50,9 +47,7 @@ const DeleteReplayUseCase = require('../Applications/use_case/DeleteReplayUseCas
 
 const LikeOrUnlikeCommentUseCase = require('../Applications/use_case/LikeOrUnlikeCommentUseCase');
 
-
 const container = createContainer();
-
 
 container.register([
   {
@@ -159,7 +154,6 @@ container.register([
     },
   },
 ]);
-
 
 container.register([
   {

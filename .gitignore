@@ -120,4 +120,6 @@ dist
 package-lock.json
 .idea
 
+.history
+
 # End of https://mrkandreev.name/snippets/gitignore-generator/#Node
