@@ -23,7 +23,7 @@
     "dotenv": "^10.0.0",
     "instances-container": "^2.0.3",
     "nanoid": "^3.1.23",
-    "pg": "^8.6.0"
+    "pg": "^7.18.2"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
@@ -34,7 +34,6 @@
     "newman": "^6.2.1",
     "node-pg-migrate": "^5.10.0",
     "nodemon": "^2.0.9",
-    "pg-migrate": "^2.0.1",
     "pm2": "^5.4.2"
   }
 }

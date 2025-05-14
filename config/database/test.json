@@ -3,5 +3,11 @@
   "password": "",
   "host": "localhost",
   "port": 5432,
-  "database": "forumapi_test"
+  "database": "forumapi_test",
+  "migrationsTable": "migrations",
+  "migrations": {
+    "directory": "./migrations",
+    "tableName": "migrations"
+  },
+  "driver": "pg"
 }
