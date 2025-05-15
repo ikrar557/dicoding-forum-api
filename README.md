@@ -15,7 +15,7 @@ Forum API adalah RESTful API yang memungkinkan pengguna untuk membuat dan berpar
 
 ## 🛠️ Teknologi
 
-- **Backend:** JavaScript, [Hapi.js](https://hapi.dev/)
+- **Backend:** JavaScript, [Hapi.js](https://hapi.dev/), Node V20
 - **Database:** PostgreSQL
 - **ORM / Query Builder:** pg
 - **Autentikasi:** JWT (JSON Web Token)
@@ -37,22 +37,28 @@ cd forum-api
 npm install
 ```
 
-## 3. Buat file konfigurasi `.env`
+### 3. Buat file konfigurasi `.env`
 
 Salin file `.env.example` menjadi `.env`, lalu isi sesuai konfigurasi lokalmu:
 
 ```bash
-PGHOST_TEST = "localhost"
-PGUSER_TEST = "postgres"
-PGPASSWORD_TEST = ""
-PGDATABASE_TEST = "forumapi_test"
-PGPORT_TEST = 5432
+PGHOST=localhost
+PGUSER=postgres
+PGPASSWORD=
+PGDATABASE=forumapi
+PGPORT=5432
+
+ACCESS_TOKEN_KEY=superSecretKey123!
+ACCESS_TOKEN_AGE=360000
+
+PORT=5000
+HOST=localhost
 ```
 
 ### 4. Setup database
 
 ```bash
-npm run migrate
+npm run migrate up
 ```
 
 ### 5. Jalankan server
@@ -203,8 +209,6 @@ const pool = require('./database/postgres/pool');
 > Menggunakan library tambahan seperti `hapi`, `bcrypt` untuk authentikasi, `nanoid` untuk membuat id pada tabel.
 
 ---
-
-
 
 ### ✅ 6. **Menggunakan SQL**
 
@@ -360,11 +364,9 @@ Terdapat test pada hampir setiap modul, baik di level domain (`*.test.js`), use 
     expect(userLogin.password).toEqual(payload.password);
 ```
 
-> Melakukan pengujian dengan membandingkan data 
+> Melakukan pengujian dengan membandingkan data
 
 ---
-
-
 
 ## 📄 Lisensi
 
